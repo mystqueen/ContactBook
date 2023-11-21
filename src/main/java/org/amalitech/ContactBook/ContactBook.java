@@ -13,10 +13,8 @@ public class ContactBook implements Serializable {
     }
 
     public void addContact(Contact contact) throws Exception {
-        System.out.println("-------------------------------");
         System.out.println(contacts);
         System.out.println(contact);
-        System.out.println("-------------------------------");
 
         for (Contact exitingContact : contacts) {
             if (exitingContact.getName().equals(contact.getName()) && exitingContact.getEmail().equals(contact.getEmail()))
