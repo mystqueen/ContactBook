@@ -45,7 +45,7 @@ public class Main implements Serializable {
             FileInputStream fileIn = new FileInputStream(filename);
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
-            contactBook2 = (Contact).in.readObject();
+            contactBook2 = (Contact) in.readObject();
 
             in.close();
             fileIn.close();
