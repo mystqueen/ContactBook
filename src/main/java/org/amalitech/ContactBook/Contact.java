@@ -1,14 +1,15 @@
-package org.amalitech;
+package org.amalitech.ContactBook;
 
 public class Contact {
 
-   private String name;
-   private String email;
+    private String name;
+    private String email;
 
-    public Contact(String name, String email){
+    public Contact(String name, String email) {
         this.name = name;
         this.email = email;
     }
+
 
     public String getName() {
         return name;
@@ -24,5 +25,13 @@ public class Contact {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
