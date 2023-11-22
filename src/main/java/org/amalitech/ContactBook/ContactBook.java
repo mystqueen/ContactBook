@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 public class ContactBook implements Serializable {
     Set<Contact> contacts;
 
@@ -18,7 +17,7 @@ public class ContactBook implements Serializable {
 
         for (Contact exitingContact : contacts) {
             if (exitingContact.getName().equals(contact.getName()) && exitingContact.getEmail().equals(contact.getEmail()))
-                throw new Exception("Contact: " + contact.getName() + " " + contact.getEmail() + " already exists");
+                throw new Exception("Contact: " + contact.getName() + " | " + contact.getEmail() + ", already exists");
         }
 
         contacts.add(contact);
@@ -26,48 +25,40 @@ public class ContactBook implements Serializable {
     }
 
 
-    public String searchForContact(String nameOrMail) {
-        for (Contact contact : contacts)
-            if (Objects.equals(contact.getName(), nameOrMail) || Objects.equals(contact.getEmail(), nameOrMail)) {
-                System.out.println(contact);
-            }
-        System.out.println(-1);
-        return null;
+    public void searchForContact(String eitherNameOrMail) {
+        for (Contact contact : contacts) {
+            if (contact.getName().equals(eitherNameOrMail) || contact.getEmail().equals(eitherNameOrMail))
+                System.out.println("Name: " + contact.getName() + " Email: " + contact.getEmail());
+        }
+        System.out.println("No results");
     }
 
-    public void backupContact(String fileName) {
+    public void backupContact() {
         //Serialization
-        try {
-            FileOutputStream fileOut = new FileOutputStream(fileName);
+        try (FileOutputStream fileOut = new FileOutputStream("file.ser")){
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
-            out.writeObject(out);
-            out.close();
-            fileOut.close();
-        } catch (
-                IOException i) {
-            System.out.println("Object serialized and saved in contactBook.txt");
-            System.out.println("IOException is caught");
+            out.writeObject(this);
+            System.out.println("Contacts backup successful ");
+        } catch (IOException i) {
+            System.out.println(i.getMessage());
+            // System.out.println("IOException is caught");
         }
     }
 
 
-    Contact contactBook2 = null;
 
-    public void restoreBackup(String fileName) throws IOException, ClassNotFoundException {
+
+    public void restoreBackup() {
         //Deserialization
-        FileInputStream fileIn = new FileInputStream(fileName);
-        ObjectInputStream in = new ObjectInputStream(fileIn);
+        try (FileInputStream fileIn = new FileInputStream("file.ser");){
+            ObjectInputStream in = new ObjectInputStream(fileIn);
 
-        contactBook2 = (Contact) in.readObject();
-
-        in.close();
-        fileIn.close();
-        System.out.println("Object has been deserialized ");
-        System.out.println("a = " + contactBook2.getName());
-        System.out.println("b = " + contactBook2.getEmail());
-//        System.out.println("IOException is caught");
-//        System.out.println("ClassNotFoundException is caught");
+            ContactBook restoredContactBook = (ContactBook) in.readObject();
+            System.out.println("Restored contact book\n " + restoredContactBook.toString());
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
