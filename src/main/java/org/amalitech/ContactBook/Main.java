@@ -1,11 +1,6 @@
 package org.amalitech.ContactBook;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-public class Main implements Serializable {
+public class Main {
     public static void main(String[] args) throws Exception {
         ContactBook contactBook = new ContactBook();
         String filename = "file.ser";
@@ -28,19 +23,13 @@ public class Main implements Serializable {
             System.out.println(e.getMessage());
         }
 
-        try {
-            FileOutputStream fileOut = new FileOutputStream(filename);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
-            out.writeObject(contactBook);
-            out.close();
-            fileOut.close();
-            System.out.println("Object serialized and saved in contactBook.txt");
-        } catch (IOException i) {
-            System.out.println("IOException is caught");
-        }
+        contactBook.backupContact("file.ser");
 
+        contactBook.restoreBackup("file.ser");
         System.out.println(contactBook);
         contactBook.searchForContact("Nana Ama or nama@gmail.com");
+
+
     }
 }
